@@ -1,49 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import './homepage.styles.scss';
 import NavBar from '../../component/navbar/nav-bar.component';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchWeather } from '../../redux/weather/weather.action';
 
 const HomePage = () => {
-  const [city, setCity] = useState('');
-  const [data, setData] = useState('');
-  const handleChange = (e) => {
-    setCity(e.target.value);
-  };
+  const dispatch = useDispatch();
+  const city = useSelector((state) => state.weather.city);
+  const data = useSelector((state) => state.weather.data);
 
-  const keyDecode = (key) => {
-    const decodedKey = key.split('-').reduce((acc, curVal, index) => {
-      if (index === 0) {
-        return `${curVal}`;
-      }
-      return `${curVal}-${acc}`;
-    }, '');
-    return decodedKey;
-  };
+  useEffect(() => {
+    const keyDecode = (key) => {
+      const decodedKey = key.split('-').reduce((acc, curVal, index) => {
+        if (index === 0) {
+          return `${curVal}`;
+        }
+        return `${curVal}-${acc}`;
+      }, '');
+      return decodedKey;
+    };
+    const getWeatherUrl = () => {
+      const key = keyDecode('3464175CBF50-A7B1-4C39-0DEF-E9975C57-CWB');
+      const host = 'https://opendata.cwb.gov.tw/';
+      const api = 'api/v1/rest/datastore/';
+      const item = 'F-C0032-001';
+      const cityUri = encodeURI(city);
+      return `${host}${api}${item}?Authorization=${key}&locationName=${cityUri}`;
+    };
+    const url = getWeatherUrl();
+    const fetchWeatherData = () => {
+      console.log('request url:', url);
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          dispatch(fetchWeather(data));
+        });
+    };
+    fetchWeatherData();
+  }, [city, dispatch]);
 
-  const fetchWeather = () => {
-    console.log('enter fetchWeather');
-    const key = keyDecode('3464175CBF50-A7B1-4C39-0DEF-E9975C57-CWB');
-    const host = 'https://opendata.cwb.gov.tw/';
-    const api = 'api/v1/rest/datastore/';
-    const item = 'F-C0032-001';
-    const cityUrl = encodeURI(city);
-    const url = `${host}${api}${item}?Authorization=${key}&locationName=${cityUrl}`;
-    console.log('request url:', url);
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  };
   return (
     <div className="homepage">
       <NavBar />
       <div className="messageBox">{JSON.stringify(data)}</div>
-      <div className="input-area">
-        <input type="text" onChange={handleChange} />
-        <button type="button" onClick={fetchWeather}>
-          送出
-        </button>
-      </div>
     </div>
   );
 };

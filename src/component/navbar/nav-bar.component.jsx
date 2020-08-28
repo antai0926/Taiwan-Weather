@@ -1,64 +1,43 @@
 import React from 'react';
 import './nav-bar.styles.scss';
+import { useDispatch } from 'react-redux';
+import { setCity } from '../../redux/weather/weather.action';
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const cities = [
+    '臺北',
+    '新北',
+    '基隆',
+    '桃園',
+    '新竹',
+    '苗栗',
+    '臺中',
+    '彰化',
+    '南投',
+    '雲林',
+    '嘉義',
+    '臺南',
+    '高雄',
+    '屏東',
+    '宜蘭',
+    '花蓮',
+    '臺東',
+  ];
+  const handleClick = (city) => {
+    dispatch(setCity(`${city}市`));
+  };
   return (
     <nav className="nav-bar">
       <div className="title">
-        <h2>台灣主要城市</h2>
+        <h2>台灣主要城市天氣</h2>
       </div>
       <ul className="area">
-        <li>
-          <a href="/#">臺北</a>
-        </li>
-        <li>
-          <a href="/#">新北</a>
-        </li>
-        <li>
-          <a href="/#">基隆</a>
-        </li>
-        <li>
-          <a href="/#">桃園</a>
-        </li>
-        <li>
-          <a href="/#">新竹</a>
-        </li>
-        <li>
-          <a href="/#">苗栗</a>
-        </li>
-        <li>
-          <a href="/#">臺中</a>
-        </li>
-        <li>
-          <a href="/#">彰化</a>
-        </li>
-        <li>
-          <a href="/#">南投</a>
-        </li>
-        <li>
-          <a href="/#">雲林</a>
-        </li>
-        <li>
-          <a href="/#">嘉義</a>
-        </li>
-        <li>
-          <a href="/#">臺南</a>
-        </li>
-        <li>
-          <a href="/#">高雄</a>
-        </li>
-        <li>
-          <a href="/#">屏東</a>
-        </li>
-        <li>
-          <a href="/#">宜蘭</a>
-        </li>
-        <li>
-          <a href="/#">花蓮</a>
-        </li>
-        <li>
-          <a href="/#">臺東</a>
-        </li>
+        {cities.map((city) => (
+          <li key={city} onClick={() => handleClick(city)}>
+            <a href="/#">{city}</a>
+          </li>
+        ))}
       </ul>
     </nav>
   );
