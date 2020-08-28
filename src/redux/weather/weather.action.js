@@ -1,7 +1,7 @@
 import WeatherActionTypes from './weather.types';
 
-export const fetchWeather = (weatherData) => ({
-  type: WeatherActionTypes.FETCH_WEATHER,
+export const setWeather = (weatherData) => ({
+  type: WeatherActionTypes.SET_WEATHER,
   payload: weatherData,
 });
 

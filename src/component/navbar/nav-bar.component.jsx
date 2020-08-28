@@ -6,26 +6,27 @@ import { setCity } from '../../redux/weather/weather.action';
 const NavBar = () => {
   const dispatch = useDispatch();
   const cities = [
-    '臺北',
-    '新北',
-    '基隆',
-    '桃園',
-    '新竹',
-    '苗栗',
-    '臺中',
-    '彰化',
-    '南投',
-    '雲林',
-    '嘉義',
-    '臺南',
-    '高雄',
-    '屏東',
-    '宜蘭',
-    '花蓮',
-    '臺東',
+    { name: '臺北', fullName: '臺北市' },
+    { name: '新北', fullName: '新北市' },
+    { name: '基隆', fullName: '基隆市' },
+    { name: '桃園', fullName: '桃園市' },
+    { name: '新竹', fullName: '新竹縣' },
+    { name: '苗栗', fullName: '苗栗縣' },
+    { name: '臺中', fullName: '臺中市' },
+    { name: '彰化', fullName: '彰化縣' },
+    { name: '南投', fullName: '南投縣' },
+    { name: '雲林', fullName: '雲林縣' },
+    { name: '嘉義', fullName: '嘉義縣' },
+    { name: '臺南', fullName: '臺南市' },
+    { name: '高雄', fullName: '高雄市' },
+    { name: '屏東', fullName: '屏東縣' },
+    { name: '宜蘭', fullName: '宜蘭縣' },
+    { name: '花蓮', fullName: '花蓮縣' },
+    { name: '臺東', fullName: '臺東縣' },
   ];
-  const handleClick = (city) => {
-    dispatch(setCity(`${city}市`));
+
+  const handleClick = (fullName) => {
+    dispatch(setCity(fullName));
   };
   return (
     <nav className="nav-bar">
@@ -34,8 +35,8 @@ const NavBar = () => {
       </div>
       <ul className="area">
         {cities.map((city) => (
-          <li key={city} onClick={() => handleClick(city)}>
-            <a href="/#">{city}</a>
+          <li key={city.name} onClick={() => handleClick(city.fullName)}>
+            <a href="/#">{city.name}</a>
           </li>
         ))}
       </ul>

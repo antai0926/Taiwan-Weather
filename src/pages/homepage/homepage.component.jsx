@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './homepage.styles.scss';
 import NavBar from '../../component/navbar/nav-bar.component';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchWeather } from '../../redux/weather/weather.action';
+import { setWeather } from '../../redux/weather/weather.action';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ const HomePage = () => {
       return decodedKey;
     };
     const getWeatherUrl = () => {
+      //CWB-E9975C57-0DEF-4C39-A7B1-3464175CBF50
       const key = keyDecode('3464175CBF50-A7B1-4C39-0DEF-E9975C57-CWB');
       const host = 'https://opendata.cwb.gov.tw/';
       const api = 'api/v1/rest/datastore/';
@@ -33,7 +34,7 @@ const HomePage = () => {
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          dispatch(fetchWeather(data));
+          dispatch(setWeather(data));
         });
     };
     fetchWeatherData();
@@ -42,7 +43,7 @@ const HomePage = () => {
   return (
     <div className="homepage">
       <NavBar />
-      <div className="messageBox">{JSON.stringify(data)}</div>
+      <div className="content">{JSON.stringify(data)}</div>
     </div>
   );
 };
