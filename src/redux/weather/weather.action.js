@@ -1,6 +1,6 @@
 import WeatherActionTypes from './weather.types';
 
-export const setWeather = (weatherData) => ({
+export const setWeatherData = (weatherData) => ({
   type: WeatherActionTypes.SET_WEATHER,
   payload: weatherData,
 });

@@ -1,8 +1,21 @@
 import WeatherActionTypes from './weather.types';
 
 const INITIAL_STATE = {
-  city: '桃園市',
-  data: null,
+  weatherData: {
+    observationTime: new Date(),
+    locationName: '',
+    humid: 0,
+    temperature: 0,
+    windSpeed: 0,
+    description: '',
+    weatherCode: 0,
+    rainPossibility: 0,
+    comfortability: '',
+  },
+  city: {
+    currentUsed: '桃園',
+    hour36Used: '桃園市',
+  },
 };
 
 const weatherReducer = (state = INITIAL_STATE, action) => {
@@ -10,7 +23,7 @@ const weatherReducer = (state = INITIAL_STATE, action) => {
     case WeatherActionTypes.SET_WEATHER:
       return {
         ...state,
-        data: action.payload,
+        weatherData: { ...state.weatherData, ...action.payload },
       };
     case WeatherActionTypes.SET_CITY:
       return {

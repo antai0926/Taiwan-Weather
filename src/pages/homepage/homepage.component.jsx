@@ -2,14 +2,17 @@ import React, { useEffect } from 'react';
 import './homepage.styles.scss';
 import NavBar from '../../component/navbar/nav-bar.component';
 import { useSelector, useDispatch } from 'react-redux';
-import { setWeather } from '../../redux/weather/weather.action';
+import { setWeatherData } from '../../redux/weather/weather.action';
+import WeatherCard from '../../component/weather-card/weather-card.component';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const city = useSelector((state) => state.weather.city);
-  const data = useSelector((state) => state.weather.data);
 
   useEffect(() => {
+    const host = 'https://opendata.cwb.gov.tw/';
+    const api = 'api/v1/rest/datastore/';
+
     const keyDecode = (key) => {
       const decodedKey = key.split('-').reduce((acc, curVal, index) => {
         if (index === 0) {
@@ -19,31 +22,98 @@ const HomePage = () => {
       }, '');
       return decodedKey;
     };
-    const getWeatherUrl = () => {
-      //CWB-E9975C57-0DEF-4C39-A7B1-3464175CBF50
-      const key = keyDecode('3464175CBF50-A7B1-4C39-0DEF-E9975C57-CWB');
-      const host = 'https://opendata.cwb.gov.tw/';
-      const api = 'api/v1/rest/datastore/';
+
+    const key = keyDecode('3464175CBF50-A7B1-4C39-0DEF-E9975C57-CWB');
+
+    const get36hoursUrl = () => {
       const item = 'F-C0032-001';
-      const cityUri = encodeURI(city);
-      return `${host}${api}${item}?Authorization=${key}&locationName=${cityUri}`;
+      return `${host}${api}${item}?Authorization=${key}&locationName=${encodeURI(
+        city.hour36Used
+      )}`;
     };
-    const url = getWeatherUrl();
-    const fetchWeatherData = () => {
-      console.log('request url:', url);
+    const getNowUrl = () => {
+      console.log('city.currentUsed', city.currentUsed);
+      // const item = 'O-A0003-001';
+      const item = 'O-A0001-001';
+      return `${host}${api}${item}?Authorization=${key}&locationName=${encodeURI(
+        city.currentUsed
+      )}`;
+    };
+
+    const fetchCurrentWeather = () => {
+      const nowUrl = getNowUrl();
+      console.log('nowUrl', nowUrl);
+      fetch(nowUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          const locationData = data.records.location[0];
+          console.log('fetchCurrentWeather', locationData);
+          if (!locationData) {
+            alert('no fetchCurrentWeather');
+            return;
+          }
+          const weatherElements = locationData.weatherElement.reduce(
+            (neededElements, item) => {
+              if (['WDSD', 'TEMP', 'HUMD'].includes(item.elementName)) {
+                neededElements[item.elementName] = item.elementValue;
+              }
+              return neededElements;
+            },
+            {}
+          );
+          const weatherData = {
+            observationTime: locationData.time.obsTime,
+            locationName: locationData.parameter[0].parameterValue,
+            // description: '多雲時晴',
+            temperature: weatherElements.TEMP,
+            windSpeed: weatherElements.WDSD,
+            humid: weatherElements.HUMD,
+          };
+
+          dispatch(setWeatherData(weatherData));
+        });
+    };
+    const fetch36HoursWeather = () => {
+      const url = get36hoursUrl();
+      console.log('36hurl', url);
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          dispatch(setWeather(data));
+          const locationData = data.records.location[0];
+          console.log('fetch36HoursWeather', locationData);
+          if (!locationData) {
+            alert('fetch36HoursWeather no');
+            return;
+          }
+          const weatherElements = locationData.weatherElement.reduce(
+            (neededElements, item) => {
+              if (['Wx', 'PoP', 'CI'].includes(item.elementName)) {
+                neededElements[item.elementName] = item.time[0].parameter;
+              }
+              return neededElements;
+            },
+            {}
+          );
+          const weatherData = {
+            description: weatherElements.Wx.parameterName,
+            weatherCode: weatherElements.Wx.parameterValue,
+            rainPossibility: weatherElements.PoP.parameterName,
+            comfortability: weatherElements.CI.parameterName,
+          };
+          dispatch(setWeatherData(weatherData));
         });
     };
-    fetchWeatherData();
+
+    fetchCurrentWeather();
+    fetch36HoursWeather();
   }, [city, dispatch]);
 
   return (
     <div className="homepage">
       <NavBar />
-      <div className="content">{JSON.stringify(data)}</div>
+      <div className="container">
+        <WeatherCard />
+      </div>
     </div>
   );
 };
