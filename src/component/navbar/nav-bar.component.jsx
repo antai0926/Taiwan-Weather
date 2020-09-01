@@ -1,6 +1,6 @@
 import React from 'react';
 import './nav-bar.styles.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCity } from '../../redux/weather/weather.action';
 
 const NavBar = () => {
@@ -32,6 +32,8 @@ const NavBar = () => {
     };
     dispatch(setCity(locationMap));
   };
+
+  const weatherData = useSelector((state) => state.weather.weatherData);
   return (
     <nav className="nav-bar">
       <div className="title">
@@ -39,7 +41,13 @@ const NavBar = () => {
       </div>
       <ul className="area">
         {cities.map((city) => (
-          <li key={city.name} onClick={() => handleClick(city)}>
+          <li
+            key={city.name}
+            onClick={() => handleClick(city)}
+            className={
+              city.fullName === weatherData.locationName ? 'active' : ''
+            }
+          >
             <a href="/#">{city.name}</a>
           </li>
         ))}

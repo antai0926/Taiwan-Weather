@@ -25,15 +25,13 @@ const HomePage = () => {
 
     const key = keyDecode('3464175CBF50-A7B1-4C39-0DEF-E9975C57-CWB');
 
-    const get36hoursUrl = () => {
+    const getFetch36hoursUrl = () => {
       const item = 'F-C0032-001';
       return `${host}${api}${item}?Authorization=${key}&locationName=${encodeURI(
         city.hour36Used
       )}`;
     };
-    const getNowUrl = () => {
-      console.log('city.currentUsed', city.currentUsed);
-      // const item = 'O-A0003-001';
+    const getFetchCurrentUrl = () => {
       const item = 'O-A0001-001';
       return `${host}${api}${item}?Authorization=${key}&locationName=${encodeURI(
         city.currentUsed
@@ -41,15 +39,13 @@ const HomePage = () => {
     };
 
     const fetchCurrentWeather = () => {
-      const nowUrl = getNowUrl();
-      console.log('nowUrl', nowUrl);
-      fetch(nowUrl)
+      fetch(getFetchCurrentUrl())
         .then((response) => response.json())
         .then((data) => {
           const locationData = data.records.location[0];
           console.log('fetchCurrentWeather', locationData);
           if (!locationData) {
-            alert('no fetchCurrentWeather');
+            alert('No currentWeather Data!');
             return;
           }
           const weatherElements = locationData.weatherElement.reduce(
@@ -74,15 +70,13 @@ const HomePage = () => {
         });
     };
     const fetch36HoursWeather = () => {
-      const url = get36hoursUrl();
-      console.log('36hurl', url);
-      fetch(url)
+      fetch(getFetch36hoursUrl())
         .then((response) => response.json())
         .then((data) => {
           const locationData = data.records.location[0];
           console.log('fetch36HoursWeather', locationData);
           if (!locationData) {
-            alert('fetch36HoursWeather no');
+            alert('No 36Hours Weather Data!');
             return;
           }
           const weatherElements = locationData.weatherElement.reduce(
