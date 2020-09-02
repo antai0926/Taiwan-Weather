@@ -17,7 +17,7 @@ const WeatherCard = () => {
     <div className="weather-card">
       <div className="location">{weatherData.locationName}</div>
       <div className="description">
-        {weatherData.description}
+        {weatherData.description}&nbsp;&nbsp;&nbsp;
         {weatherData.comfortability}
       </div>
       <div className="currentWeather">

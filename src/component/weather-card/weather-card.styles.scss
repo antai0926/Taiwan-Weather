@@ -4,6 +4,9 @@
   box-shadow: 0 1px 3px 0 #999999;
   background-color: #f9f9f9;
   padding: 30px 15px;
+  @media (max-width: 390px) {
+    min-width: 100%;
+  }
   .location {
     font-size: 28px;
     color: #212121;

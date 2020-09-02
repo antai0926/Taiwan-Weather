@@ -10,5 +10,8 @@
     padding: 30px;
     display: flex;
     justify-content: center;
+    @media (max-width: 390px) {
+      padding: 5px;
+    }
   }
 }
