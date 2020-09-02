@@ -1,6 +1,6 @@
 import React from 'react';
 import './weather-card.styles.scss';
-import { ReactComponent as CloudyIcon } from '../../assets/images/day-cloudy.svg';
+import WeatherIcon from '../weather-icon/weather-icon.component';
 import { ReactComponent as AirFlowIcon } from '../../assets/images/airFlow.svg';
 import { ReactComponent as RainIcon } from '../../assets/images/rain.svg';
 import { ReactComponent as RefreshIcon } from '../../assets/images/refresh.svg';
@@ -25,7 +25,7 @@ const WeatherCard = () => {
           {Math.round(weatherData.temperature)}
           <div className="celsius">°C</div>
         </div>
-        <CloudyIcon className="cloudy-icon" />
+        <WeatherIcon />
       </div>
       <div className="airflow">
         <AirFlowIcon />
