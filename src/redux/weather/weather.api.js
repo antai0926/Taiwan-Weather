@@ -9,7 +9,7 @@ export function* fetchCurrentWeather(city) {
   const data = yield response.json();
 
   const locationData = yield data.records.location[0];
-  console.log('CurrentWeather:', locationData);
+  // console.log('CurrentWeather:', locationData);
   if (!locationData) {
     alert('喔不~現在所選縣市之觀測站目前無資訊!(CurrentWeather)');
     return;
@@ -39,7 +39,7 @@ export const fetch36HoursWeather = (city) => {
     .then((response) => response.json())
     .then((data) => {
       const locationData = data.records.location[0];
-      console.log('WeatherDataIn36Hours:', locationData);
+      // console.log('WeatherDataIn36Hours:', locationData);
       if (!locationData) {
         alert('喔不~現在所選縣市之觀測站目前無資訊!(36Hours)');
         return;
