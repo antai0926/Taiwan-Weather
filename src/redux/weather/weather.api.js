@@ -11,7 +11,7 @@ export function* fetchCurrentWeather(city) {
   const locationData = yield data.records.location[0];
   console.log('CurrentWeather:', locationData);
   if (!locationData) {
-    alert('No currentWeather Data!');
+    alert('喔不~現在所選縣市之觀測站目前無資訊!(CurrentWeather)');
     return;
   }
   const weatherElements = yield locationData.weatherElement.reduce(
@@ -41,7 +41,7 @@ export const fetch36HoursWeather = (city) => {
       const locationData = data.records.location[0];
       console.log('WeatherDataIn36Hours:', locationData);
       if (!locationData) {
-        alert('No 36Hours Weather Data!');
+        alert('喔不~現在所選縣市之觀測站目前無資訊!(36Hours)');
         return;
       }
       const weatherElements = locationData.weatherElement.reduce(

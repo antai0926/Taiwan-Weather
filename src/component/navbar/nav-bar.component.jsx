@@ -8,7 +8,7 @@ const NavBar = () => {
   const cities = [
     { name: '臺北', fullName: '臺北市', station: '天母' },
     { name: '新北', fullName: '新北市', station: '新莊' },
-    { name: '基隆', fullName: '基隆市', station: '七堵' },
+    { name: '基隆', fullName: '基隆市', station: '基隆嶼' },
     { name: '桃園', fullName: '桃園市', station: '桃園' },
     { name: '新竹', fullName: '新竹縣', station: '關西' },
     { name: '苗栗', fullName: '苗栗縣', station: '苗栗' },
