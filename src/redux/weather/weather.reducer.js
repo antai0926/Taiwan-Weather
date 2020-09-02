@@ -30,6 +30,11 @@ const weatherReducer = (state = INITIAL_STATE, action) => {
         ...state,
         city: action.payload,
       };
+    case WeatherActionTypes.FETCH_CURRENT_WEATHER_SUCCESS:
+      return {
+        ...state,
+        weatherData: { ...state.weatherData, ...action.payload },
+      };
     default:
       return state;
   }

@@ -1,0 +1,20 @@
+const host = 'https://opendata.cwb.gov.tw/';
+const api = 'api/v1/rest/datastore/';
+
+export const keyDecode = (key) => {
+  const decodedKey = key.split('-').reduce((acc, curVal, index) => {
+    if (index === 0) {
+      return `${curVal}`;
+    }
+    return `${curVal}-${acc}`;
+  }, '');
+  return decodedKey;
+};
+const key = keyDecode('3464175CBF50-A7B1-4C39-0DEF-E9975C57-CWB');
+
+export const getFetchCurrentUrl = (city) => {
+  const item = 'O-A0001-001';
+  return `${host}${api}${item}?Authorization=${key}&locationName=${encodeURI(
+    city.currentUsed
+  )}`;
+};

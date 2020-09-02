@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import './homepage.styles.scss';
 import NavBar from '../../component/navbar/nav-bar.component';
 import { useSelector, useDispatch } from 'react-redux';
-import { setWeatherData } from '../../redux/weather/weather.action';
+import {
+  setWeatherData,
+  fetchCurrentWeatherStart,
+} from '../../redux/weather/weather.action';
 import WeatherCard from '../../component/weather-card/weather-card.component';
 
 const HomePage = () => {
@@ -39,35 +42,35 @@ const HomePage = () => {
     };
 
     const fetchCurrentWeather = () => {
-      fetch(getFetchCurrentUrl())
-        .then((response) => response.json())
-        .then((data) => {
-          const locationData = data.records.location[0];
-          console.log('fetchCurrentWeather', locationData);
-          if (!locationData) {
-            alert('No currentWeather Data!');
-            return;
-          }
-          const weatherElements = locationData.weatherElement.reduce(
-            (neededElements, item) => {
-              if (['WDSD', 'TEMP', 'HUMD'].includes(item.elementName)) {
-                neededElements[item.elementName] = item.elementValue;
-              }
-              return neededElements;
-            },
-            {}
-          );
-          const weatherData = {
-            observationTime: locationData.time.obsTime,
-            locationName: locationData.parameter[0].parameterValue,
-            // description: '多雲時晴',
-            temperature: weatherElements.TEMP,
-            windSpeed: weatherElements.WDSD,
-            humid: weatherElements.HUMD,
-          };
+      // fetch(getFetchCurrentUrl())
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     const locationData = data.records.location[0];
+      //     console.log('fetchCurrentWeather', locationData);
+      //     if (!locationData) {
+      //       alert('No currentWeather Data!');
+      //       return;
+      //     }
+      //     const weatherElements = locationData.weatherElement.reduce(
+      //       (neededElements, item) => {
+      //         if (['WDSD', 'TEMP', 'HUMD'].includes(item.elementName)) {
+      //           neededElements[item.elementName] = item.elementValue;
+      //         }
+      //         return neededElements;
+      //       },
+      //       {}
+      //     );
+      //     const weatherData = {
+      //       observationTime: locationData.time.obsTime,
+      //       locationName: locationData.parameter[0].parameterValue,
+      //       // description: '多雲時晴',
+      //       temperature: weatherElements.TEMP,
+      //       windSpeed: weatherElements.WDSD,
+      //       humid: weatherElements.HUMD,
+      //     };
 
-          dispatch(setWeatherData(weatherData));
-        });
+      // });
+      dispatch(fetchCurrentWeatherStart(city));
     };
     const fetch36HoursWeather = () => {
       fetch(getFetch36hoursUrl())
