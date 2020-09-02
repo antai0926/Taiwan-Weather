@@ -4,38 +4,44 @@ import { ReactComponent as CloudyIcon } from '../../assets/images/day-cloudy.svg
 import { ReactComponent as AirFlowIcon } from '../../assets/images/airFlow.svg';
 import { ReactComponent as RainIcon } from '../../assets/images/rain.svg';
 import { ReactComponent as RefreshIcon } from '../../assets/images/refresh.svg';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCurrentWeatherStart } from '../../redux/weather/weather.action';
 const WeatherCard = () => {
-  const currentWeather = useSelector((state) => state.weather.weatherData);
+  const { weatherData, city } = useSelector((state) => state.weather);
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(fetchCurrentWeatherStart(city));
+  };
+
   return (
     <div className="weather-card">
-      <div className="location">{currentWeather.locationName}</div>
+      <div className="location">{weatherData.locationName}</div>
       <div className="description">
-        {currentWeather.description}
-        {currentWeather.comfortability}
+        {weatherData.description}
+        {weatherData.comfortability}
       </div>
       <div className="currentWeather">
         <div className="temperature">
-          {Math.round(currentWeather.temperature)}
+          {Math.round(weatherData.temperature)}
           <div className="celsius">°C</div>
         </div>
         <CloudyIcon className="cloudy-icon" />
       </div>
       <div className="airflow">
         <AirFlowIcon />
-        {currentWeather.windSpeed} m/h
+        {weatherData.windSpeed} m/h
       </div>
       <div className="rain">
         <RainIcon />
-        {Math.round(currentWeather.rainPossibility)} %
+        {Math.round(weatherData.rainPossibility)} %
       </div>
       <div className="refresh">
         最後觀測時間：
         {new Intl.DateTimeFormat('zh-TW', {
           hour: 'numeric',
           minute: 'numeric',
-        }).format(new Date(currentWeather.observationTime))}{' '}
-        <RefreshIcon />
+        }).format(new Date(weatherData.observationTime))}{' '}
+        <RefreshIcon onClick={handleClick} />
       </div>
     </div>
   );
