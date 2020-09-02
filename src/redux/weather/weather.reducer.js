@@ -20,11 +20,6 @@ const INITIAL_STATE = {
 
 const weatherReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case WeatherActionTypes.SET_WEATHER:
-      return {
-        ...state,
-        weatherData: { ...state.weatherData, ...action.payload },
-      };
     case WeatherActionTypes.SET_CITY:
       return {
         ...state,
@@ -33,7 +28,12 @@ const weatherReducer = (state = INITIAL_STATE, action) => {
     case WeatherActionTypes.FETCH_CURRENT_WEATHER_SUCCESS:
       return {
         ...state,
-        weatherData: { ...state.weatherData, ...action.payload },
+        weatherData: action.payload,
+      };
+    case WeatherActionTypes.FETCH_CURRENT_WEATHER_FAILURE:
+      return {
+        ...state,
+        errorMessage: action.payload,
       };
     default:
       return state;

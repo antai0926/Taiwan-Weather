@@ -18,3 +18,10 @@ export const getFetchCurrentUrl = (city) => {
     city.currentUsed
   )}`;
 };
+
+export const getFetch36hoursUrl = (city) => {
+  const item = 'F-C0032-001';
+  return `${host}${api}${item}?Authorization=${key}&locationName=${encodeURI(
+    city.hour36Used
+  )}`;
+};
